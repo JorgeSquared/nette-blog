@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Presenters;
 
 use Nette;
+use Nette\Application\UI\Presenter;
 use Nette\Database\Explorer;
 
 
-final class HomepagePresenter extends Nette\Application\UI\Presenter
+final class HomepagePresenter extends Presenter
 {
     public function __construct(private Explorer $db)
     {
