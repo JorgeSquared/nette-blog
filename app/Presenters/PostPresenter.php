@@ -41,6 +41,23 @@ class PostPresenter extends Presenter
 
         $form->addSubmit('send', 'Publikovat komentář');
 
+        $form->onSuccess[] = [$this, 'commentFormSucceeded'];
+
         return $form;
+    }
+
+    public function commentFormSucceeded(\stdClass $values): void
+    {
+        $postId = $this->getParameter('postId');
+
+        $this->db->table('comment')->insert([
+            'post_id' => $postId,
+            'name' => $values->name,
+            'email' => $values->email,
+            'content' => $values->content,
+        ]);
+
+        $this->flashMessage('Děkuji za komentář', 'success');
+        $this->redirect('this');
     }
 }
