@@ -16,6 +16,17 @@ class PostPresenter extends Presenter
 
     }
 
+    public function actionEdit(int $postId): void
+    {
+        $post = $this->db->table('post')->get($postId);
+
+        if (!$post) {
+            $this->error('Omlouváme se, ale příspěvek, který chcete zobrazit, nejspíš neexistuje', 404);
+        }
+
+        $this['postForm']->setDefaults($post->toArray());
+    }
+
     public function renderShow(int $postId): void
     {
         $post = $this->db->table('post')->get($postId);
@@ -76,13 +87,21 @@ class PostPresenter extends Presenter
         return $form;
     }
 
-    public function postFormSucceeded(array $values): void
+    public function postFormSucceeded(Form $form, array $values): void
     {
-        $post = $this->db->table('post')->insert($values);
+        $postId = $this->getParameter('postId');
 
-        $this->flashMessage("Příspěvek byl úspěšně publikován.", 'success');
+        if ($postId) {
+            $post = $this->db->table('post')->get($postId);
+            $post->update($values);
+        } else {
+            $post = $this->db->table('post')->insert($values);
+        }
+
+        $this->flashMessage('Příspěvek byl úspěšně publikován.', 'success');
         $this->redirect('Post:show', $post->id);
     }
+
 
 
 }

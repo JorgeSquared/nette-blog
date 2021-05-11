@@ -5,6 +5,8 @@
 
     <h1 n:block="title">{$post->title}</h1>
 
+    <a n:href="Post:edit $post->id">Upravit příspěvek</a>
+
     <div class="post">{$post->content}</div>
 
     <h2> Vložte nový komentář </h2>
