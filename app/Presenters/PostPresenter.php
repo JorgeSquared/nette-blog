@@ -61,4 +61,28 @@ class PostPresenter extends Presenter
         $this->flashMessage('Děkuji za komentář', 'success');
         $this->redirect('this');
     }
+
+    protected function createComponentPostForm(): Form
+    {
+        $form = new Form;
+        $form->addText('title', 'Titulek:')
+            ->setRequired();
+        $form->addTextArea('content', 'Obsah:')
+            ->setRequired();
+
+        $form->addSubmit('send', 'Uložit a publikovat');
+        $form->onSuccess[] = [$this, 'postFormSucceeded'];
+
+        return $form;
+    }
+
+    public function postFormSucceeded(array $values): void
+    {
+        $post = $this->db->table('post')->insert($values);
+
+        $this->flashMessage("Příspěvek byl úspěšně publikován.", 'success');
+        $this->redirect('Post:show', $post->id);
+    }
+
+
 }
