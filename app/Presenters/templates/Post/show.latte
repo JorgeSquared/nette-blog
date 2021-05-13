@@ -5,7 +5,7 @@
 
     <h1 n:block="title">{$post->title}</h1>
 
-    <a n:href="Post:edit $post->id">Upravit příspěvek</a>
+    <a n:href="Post:edit $post->id" n:if="$user->isLoggedIn()">Upravit příspěvek</a>
 
     <div class="post">{$post->content}</div>
 

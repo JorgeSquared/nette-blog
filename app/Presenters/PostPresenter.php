@@ -16,8 +16,21 @@ class PostPresenter extends Presenter
 
     }
 
+    public function actionCreate()
+    {
+        if (!$this->getUser()->isLoggedIn()) {
+            $this->flashMessage('Pro vkládání příspěvků se musíte nejprve přihlásit', 'error');
+            $this->redirect('Sign:in');
+        }
+    }
+
     public function actionEdit(int $postId): void
     {
+        if (!$this->getUser()->isLoggedIn()) {
+            $this->flashMessage('Pro vkládání příspěvků se musíte nejprve přihlásit', 'error');
+            $this->redirect('Sign:in');
+        }
+
         $post = $this->db->table('post')->get($postId);
 
         if (!$post) {
@@ -89,6 +102,10 @@ class PostPresenter extends Presenter
 
     public function postFormSucceeded(Form $form, array $values): void
     {
+        if (!$this->getUser()->isLoggedIn()) {
+            $this->error('Pro vkládání příspěvků se musíte nejprve přihlásit');
+        }
+
         $postId = $this->getParameter('postId');
 
         if ($postId) {
