@@ -8,9 +8,8 @@ use Nette\Database\Explorer;
 use Nette\Database\Table\ActiveRow;
 use Nette\Database\Table\Selection;
 use Nette\SmartObject;
-use Nette\Utils\DateTime;
 
-class PostManager
+class CommentManager
 {
     use SmartObject;
 
@@ -21,7 +20,7 @@ class PostManager
 
     public function getAll(): Selection
     {
-        return $this->db->table('post');
+        return $this->db->table('comment');
     }
 
     public function getById(int $id): ?ActiveRow
@@ -34,11 +33,11 @@ class PostManager
         $this->getAll()->insert($values);
     }
 
-    public function getPublicPosts(int $limit = null): Selection
+    public function getCommentsByPostId(int $postId, int $limit = null): Selection
     {
         $retVal = $this->getAll()
-            ->where('created_at < ', new DateTime)
-            ->order('created_at DESC');
+            ->where('post_id')
+            ->order('created_at');
 
         if ($limit) {
             $retVal->limit($limit);

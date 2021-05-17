@@ -21,6 +21,7 @@ di:
 services:
 	- App\Router\RouterFactory::createRouter
 	- App\Model\PostManager
+	- App\Model\CommentManager
 
 security:
 	users:

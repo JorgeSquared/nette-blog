@@ -5,16 +5,17 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
+use App\Model\CommentManager;
+use App\Model\PostManager;
 use Nette\Application\UI\Form;
 use Nette\Application\UI\Presenter;
-use Nette\Database\Explorer;
 
 class PostPresenter extends Presenter
 {
-    public function __construct(private Explorer $db)
-    {
-
-    }
+    public function __construct(
+        private PostManager $postManager,
+        private CommentManager $commentManager
+    ) {}
 
     public function actionCreate()
     {
@@ -31,7 +32,7 @@ class PostPresenter extends Presenter
             $this->redirect('Sign:in');
         }
 
-        $post = $this->db->table('post')->get($postId);
+        $post = $this->postManager->getById($postId);
 
         if (!$post) {
             $this->error('Omlouváme se, ale příspěvek, který chcete zobrazit, nejspíš neexistuje', 404);
@@ -42,14 +43,14 @@ class PostPresenter extends Presenter
 
     public function renderShow(int $postId): void
     {
-        $post = $this->db->table('post')->get($postId);
+        $post = $this->postManager->getById($postId);
 
         if (!$post) {
             $this->error('Omlouváme se, ale příspěvek, který chcete zobrazit, nejspíš neexistuje', 404);
         }
 
         $this->template->post = $post;
-        $this->template->comments = $post->related('comment')->order('created_at');
+        $this->template->comments = $this->commentManager->getCommentsByPostId($postId);
     }
 
     protected function createComponentCommentForm(): Form
@@ -75,7 +76,7 @@ class PostPresenter extends Presenter
     {
         $postId = $this->getParameter('postId');
 
-        $this->db->table('comment')->insert([
+        $this->commentManager->insert([
             'post_id' => $postId,
             'name' => $values->name,
             'email' => $values->email,
@@ -109,10 +110,10 @@ class PostPresenter extends Presenter
         $postId = $this->getParameter('postId');
 
         if ($postId) {
-            $post = $this->db->table('post')->get($postId);
+            $post = $this->postManager->getById($postId);
             $post->update($values);
         } else {
-            $post = $this->db->table('post')->insert($values);
+            $post = $this->postManager->insert($values);
         }
 
         $this->flashMessage('Příspěvek byl úspěšně publikován.', 'success');

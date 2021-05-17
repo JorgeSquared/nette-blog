@@ -17,7 +17,6 @@ final class HomepagePresenter extends Presenter
 
     public function renderDefault()
     {
-        $this->template->posts = $this->postManager->getPublicPosts()
-            ->limit(5);
+        $this->template->posts = $this->postManager->getPublicPosts(3);
     }
 }
