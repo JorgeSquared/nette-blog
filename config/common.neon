@@ -20,6 +20,7 @@ di:
 
 services:
 	- App\Router\RouterFactory::createRouter
+	- App\Model\PostManager
 
 security:
 	users:

@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
-use Nette;
+use App\Model\PostManager;
 use Nette\Application\UI\Presenter;
-use Nette\Database\Explorer;
 
 
 final class HomepagePresenter extends Presenter
 {
-    public function __construct(private Explorer $db)
+    public function __construct(private PostManager $postManager)
     {
 
     }
 
     public function renderDefault()
     {
-        $this->template->posts = $this->db->table('post')
-            ->order('created_at DESC')
+        $this->template->posts = $this->postManager->getPublicPosts()
             ->limit(5);
     }
 }
