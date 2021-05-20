@@ -36,7 +36,7 @@ class CommentManager
     public function getCommentsByPostId(int $postId, int $limit = null): Selection
     {
         $retVal = $this->getAll()
-            ->where('post_id')
+            ->where('post_id', $postId)
             ->order('created_at');
 
         if ($limit) {
