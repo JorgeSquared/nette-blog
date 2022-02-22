@@ -31,7 +31,7 @@ class PostManager
 
     public function insert(array $values): ActiveRow
     {
-        $this->getAll()->insert($values);
+        return $this->getAll()->insert($values);
     }
 
     public function getPublicPosts(int $limit = null): Selection

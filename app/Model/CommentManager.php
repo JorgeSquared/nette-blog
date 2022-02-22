@@ -30,7 +30,7 @@ class CommentManager
 
     public function insert(array $values): ActiveRow
     {
-        $this->getAll()->insert($values);
+        return $this->getAll()->insert($values);
     }
 
     public function getCommentsByPostId(int $postId, int $limit = null): Selection
