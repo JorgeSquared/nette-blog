@@ -108,7 +108,7 @@ class PostPresenter extends Presenter
             $this->error('Pro vkládání příspěvků se musíte nejprve přihlásit');
         }
 
-        $postId = $this->getParameter('postId');
+        $postId = (int) $this->getParameter('postId');
 
         if ($postId) {
             $post = $this->postManager->getById($postId);
