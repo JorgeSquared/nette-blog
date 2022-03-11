@@ -2,7 +2,7 @@
 {block content}
     <h1 n:block="title">Jorge's blog</h1>
 
-    <a n:href="Post:create" n:if="$user->isLoggedIn()">Napsat nový příspěvek</a>
+    <a n:href="Post:manipulate" n:if="$user->isLoggedIn()">Napsat nový příspěvek</a>
 
     <div class="post" n:foreach="$posts as $post">
             <div class="date">{$post->created_at|date:'F j, Y'}</div>

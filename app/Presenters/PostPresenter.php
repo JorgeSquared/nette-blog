@@ -17,19 +17,15 @@ class PostPresenter extends Presenter
         private CommentManager $commentManager
     ) {}
 
-    public function actionCreate()
+    public function actionManipulate(int $postId = 0): void
     {
         if (!$this->getUser()->isLoggedIn()) {
             $this->flashMessage('Pro vkládání příspěvků se musíte nejprve přihlásit', 'error');
             $this->redirect('Sign:in');
         }
-    }
 
-    public function actionEdit(int $postId): void
-    {
-        if (!$this->getUser()->isLoggedIn()) {
-            $this->flashMessage('Pro vkládání příspěvků se musíte nejprve přihlásit', 'error');
-            $this->redirect('Sign:in');
+        if ($postId == 0) {
+            return;
         }
 
         $post = $this->postManager->getById($postId);
@@ -39,6 +35,11 @@ class PostPresenter extends Presenter
         }
 
         $this['postForm']->setDefaults($post->toArray());
+    }
+
+    public function renderManipulate(int $postId = 0)
+    {
+        $this->template->postId = $postId;
     }
 
     public function renderShow(int $postId): void

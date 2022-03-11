@@ -26,6 +26,7 @@ class PostManager
 
     public function getById(int $id): ?ActiveRow
     {
+        $id = (int) $id;
         return $this->getAll()->get($id);
     }
 

@@ -15,6 +15,9 @@ final class RouterFactory
 	public static function createRouter(): RouteList
 	{
 		$router = new RouteList;
+        $router->addRoute('prihlaseni/', 'Sign:in');
+        $router->addRoute('editacePrispevku/<postId>', 'Post:manipulate');
+        $router->addRoute('vytvoreniPrispevku/', 'Post:manipulate');
 		$router->addRoute('<presenter>/<action>[/<id>]', 'Homepage:default');
 		return $router;
 	}
